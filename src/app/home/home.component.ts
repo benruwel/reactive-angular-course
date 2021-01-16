@@ -13,9 +13,6 @@ import {
   shareReplay,
   tap,
 } from "rxjs/operators";
-import { HttpClient } from "@angular/common/http";
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { CourseDialogComponent } from "../course-dialog/course-dialog.component";
 
 @Component({
   selector: "home",
@@ -23,13 +20,13 @@ import { CourseDialogComponent } from "../course-dialog/course-dialog.component"
   styleUrls: ["./home.component.css"],
 })
 export class HomeComponent implements OnInit {
+  //this is a smart component - it has access to the service layer
   beginnerCourses$: Observable<Course[]>;
 
   advancedCourses$: Observable<Course[]>;
 
   constructor(
-    private coursesService: CoursesService,
-    private dialog: MatDialog
+    private coursesService: CoursesService
   ) {}
 
   ngOnInit() {
@@ -47,17 +44,5 @@ export class HomeComponent implements OnInit {
         courses.filter((course) => course.category === "ADVANCED")
       )
     );
-  }
-
-  editCourse(course: Course) {
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = "400px";
-
-    dialogConfig.data = course;
-
-    const dialogRef = this.dialog.open(CourseDialogComponent, dialogConfig);
   }
 }
