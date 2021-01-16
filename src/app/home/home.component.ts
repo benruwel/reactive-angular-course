@@ -36,6 +36,7 @@ export class HomeComponent implements OnInit {
     const courses$ = this.coursesService
       .loadAllCourses()
       .pipe(map((courses) => courses.sort(sortCoursesBySeqNo)));
+    // by the view subscribing to these two Observables the loadAllCourses is executed twice thus two http requests
     this.beginnerCourses$ = courses$.pipe(
       map((courses) =>
         courses.filter((course) => course.category === "BEGINNER")
