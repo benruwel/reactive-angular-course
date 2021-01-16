@@ -19,4 +19,13 @@ export class CoursesService {
       shareReplay()
     );
   }
+
+  //Partial allows use to modify parts of the instance of the object without
+  // creating a whole new instance 
+  saveCourse(courseId : string, changes: Partial<Course>) : Observable<any> {
+      return this.http.put(`api/courses/${courseId}`, changes)
+      .pipe(
+          shareReplay()
+      )
+  }
 }
