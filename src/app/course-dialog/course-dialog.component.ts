@@ -1,3 +1,4 @@
+import { LoadingService } from './../loading/loading.service';
 import { CoursesService } from './../services/courses.service';
 import {AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
@@ -22,6 +23,7 @@ export class CourseDialogComponent implements AfterViewInit {
         private fb: FormBuilder,
         private dialogRef: MatDialogRef<CourseDialogComponent>,
         @Inject(MAT_DIALOG_DATA) course:Course,
+        private loadingService : LoadingService,
         private courseService : CoursesService) {
 
         this.course = course;
