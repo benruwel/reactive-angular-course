@@ -10,7 +10,8 @@ import {Observable} from 'rxjs';
 export class LoadingComponent implements OnInit {
 
 
-  constructor(private loadingService : LoadingService) {
+  //we make the parameter service public to give the template access to it
+  constructor(public loadingService : LoadingService) {
   }
 
   ngOnInit() {
