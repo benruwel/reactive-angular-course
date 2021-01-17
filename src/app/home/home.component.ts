@@ -15,6 +15,7 @@ import {
   tap,
 } from 'rxjs/operators';
 import {MessagesService} from '../messages/messages.service';
+import {CoursesStore} from '../services/courses.store';
 
 @Component({
   selector: 'home',
@@ -27,40 +28,14 @@ export class HomeComponent implements OnInit {
 
   advancedCourses$: Observable<Course[]>;
 
-  constructor(
-    private coursesService: CoursesService,
-    private loadingService: LoadingService,
-    private messageService: MessagesService
-  ) {}
+  constructor(private coursesStore: CoursesStore) {}
 
   ngOnInit() {
     this.reloadCourses();
   }
 
   reloadCourses() {
-    const courses$ = this.coursesService
-      .loadAllCourses()
-      .pipe(
-        map((courses) => courses.sort(sortCoursesBySeqNo)),
-        catchError(err => {
-          const message = 'Could not load courses';
-          this.messageService.showErrors(message);
-          console.log(message, err);
-          // this creates a new observable that emits the error and terminates its lifecycle chain
-          return throwError(err);
-        })
-      );
-    const loadCourses$ = this.loadingService.showLoaderUntilCompleted(courses$);
-    // by the view subscribing to these two Observables the loadAllCourses is executed twice thus two http requests
-    this.beginnerCourses$ = loadCourses$.pipe(
-      map((courses) =>
-        courses.filter((course) => course.category === 'BEGINNER')
-      )
-    );
-    this.advancedCourses$ = loadCourses$.pipe(
-      map((courses) =>
-        courses.filter((course) => course.category === 'ADVANCED')
-      )
-    );
+    this.beginnerCourses$ = this.coursesStore.filterByCategory('BEGINNER');
+    this.advancedCourses$ = this.coursesStore.filterByCategory('ADVANCED');
   }
 }
